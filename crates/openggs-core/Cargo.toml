@@ -1,0 +1,13 @@
+[package]
+name = "openggs-core"
+description = "Deterministic, renderer-free game core transcoded from the OpenGGS C++ sources."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+
+[lints]
+workspace = true

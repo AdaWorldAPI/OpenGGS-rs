@@ -1,0 +1,24 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/openggs-core",
+    "crates/openggs-stagefile",
+    "crates/openggs-spo",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.98"
+license = "GPL-2.0-only"
+repository = "https://github.com/AdaWorldAPI/OpenGGS-rs"
+
+[workspace.dependencies]
+openggs-core = { path = "crates/openggs-core" }
+openggs-stagefile = { path = "crates/openggs-stagefile" }
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+all = { level = "deny", priority = -1 }

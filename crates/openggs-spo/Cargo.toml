@@ -1,0 +1,13 @@
+[package]
+name = "openggs-spo"
+description = "The libclang-harvest inventory of the OpenGGS C++ corpus, and the transcode coverage ledger derived from it."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+
+[lints]
+workspace = true
