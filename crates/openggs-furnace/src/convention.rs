@@ -137,6 +137,17 @@ pub enum ConfigError {
     DepthOutOfRange {
         line: usize,
     },
+    /// A row claimed a prefix depth this parser cannot express.
+    ///
+    /// Rails 3-5 are `depth:kind`, `sequence` and `symbol`. The config format
+    /// has no syntax for any of them, so a `depth=4` row would leave rail 3
+    /// zero while EVERY real event address carries a non-zero kind byte there —
+    /// the row could never match in `resolve`. Accepting it would be accepting
+    /// permanently dead configuration.
+    DepthNotExpressible {
+        line: usize,
+        depth: u8,
+    },
     /// Two rows claim the same prefix, so longest-prefix-wins would be
     /// ambiguous. Rejected rather than silently letting one win.
     DuplicatePrefix {
@@ -152,6 +163,14 @@ impl std::fmt::Display for ConfigError {
             Self::UnknownConcern { line } => ("unknown concern", line),
             Self::BadField { line } => ("malformed field", line),
             Self::DepthOutOfRange { line } => ("depth must be 0..=6", line),
+            Self::DepthNotExpressible { line, depth } => {
+                return write!(
+                    f,
+                    "convention line {line}: depth={depth} is not expressible — only \
+                     depths 0..=3 (classid / unit / function / scope) have config syntax; \
+                     rails 3-5 (depth:kind, sequence, symbol) do not"
+                );
+            }
             Self::DuplicatePrefix { line } => ("two rows claim the same prefix", line),
         };
         write!(f, "convention line {line}: {what}")
@@ -200,6 +219,12 @@ impl Convention {
                                     v.parse().map_err(|_| ConfigError::BadField { line })?;
                                 if d > 6 {
                                     return Err(ConfigError::DepthOutOfRange { line });
+                                }
+                                if d > 3 {
+                                    return Err(ConfigError::DepthNotExpressible {
+                                        line,
+                                        depth: d,
+                                    });
                                 }
                                 depth = Some(d);
                             }
@@ -454,6 +479,18 @@ mod tests {
         assert_eq!(
             Convention::from_config("row depth=9 concern=State\n").unwrap_err(),
             ConfigError::DepthOutOfRange { line: 1 }
+        );
+        // A depth the parser cannot express is rejected rather than accepted as
+        // dead config: rail 3 would stay zero while every event address carries
+        // a non-zero kind byte there, so the row could never match.
+        assert_eq!(
+            Convention::from_config("row depth=4 concern=State\n").unwrap_err(),
+            ConfigError::DepthNotExpressible { line: 1, depth: 4 }
+        );
+        assert!(
+            Convention::from_config("row depth=3 unit=1 function=2 scope=3 concern=State\n")
+                .is_ok(),
+            "depth 3 is the deepest expressible prefix and must still parse"
         );
         // Comments and blank lines are not errors.
         assert!(Convention::from_config("# a note\n\n  \nclassify Read\n").is_ok());

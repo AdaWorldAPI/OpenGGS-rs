@@ -161,8 +161,15 @@ impl Ore {
         }
 
         // Pass 3: the facts, in file order.
+        //
+        // EVERY line is enumerated, blank ones included. `str::lines` already
+        // drops the empty element a terminal newline would produce, so an empty
+        // line here is an interior blank row — a malformed row, not a nothing.
+        // Filtering it out would both lose a fact (breaking conservation) and
+        // shift every later `ore_seq`, so the provenance column would point at
+        // the wrong source row.
         let mut facts = Vec::new();
-        for (row, line) in events.lines().filter(|l| !l.trim().is_empty()).enumerate() {
+        for (row, line) in events.lines().enumerate() {
             let ore_seq = row as u32;
             let c: Vec<&str> = line.split('\t').collect();
             // The schema is 11 columns. `== 11`, not `>= 11`: a permissive arity
@@ -262,6 +269,37 @@ mod tests {
             .position(|f| f.contains("g()"))
             .expect("g") as u32;
         assert_eq!(ore.scope_depth.get(&(g, 1)), Some(&1));
+    }
+
+    #[test]
+    fn an_interior_blank_row_is_malformed_and_does_not_shift_provenance() {
+        // Conservation AND provenance: the blank must become its own fact, and
+        // the row after it must still report its true file position.
+        let with_blank = "\
+/p/A.cpp.f()\t0\tScopeEnter\ts0\t-\tc0\t-\t10\t-\t-\twalk
+
+/p/A.cpp.f()\t1\tWrite\ts5\t-\tc0\t-\t11\t-\t-\tclang
+";
+        let ore = Ore::parse(with_blank, SCOPES);
+        assert_eq!(ore.fact_count(), 3, "the blank row must be enumerated");
+        assert!(matches!(ore.facts[1], OreFact::MalformedRow { ore_seq: 1 }));
+        let OreFact::Event(e) = ore.facts[2] else {
+            panic!("expected an event")
+        };
+        assert_eq!(e.ore_seq, 2, "ore_seq must stay aligned with the file");
+    }
+
+    #[test]
+    fn a_trailing_newline_does_not_invent_a_malformed_row() {
+        // The other half: only an INTERIOR blank is a fact. A file ending in a
+        // newline must not report a phantom row, or every harvest would carry
+        // one fabricated residual.
+        let ore = Ore::parse(
+            "/p/A.cpp.f()\t0\tWrite\ts5\t-\tc0\t-\t11\t-\t-\tclang\n",
+            SCOPES,
+        );
+        assert_eq!(ore.fact_count(), 1);
+        assert!(matches!(ore.facts[0], OreFact::Event(_)));
     }
 
     #[test]

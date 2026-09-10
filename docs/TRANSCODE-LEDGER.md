@@ -50,8 +50,16 @@ measures the file, not the corpus.
 
 What the pass genuinely bought is the **concern-separated, addressed
 decomposition** — 34,326 rows at stable 16-byte coordinates, split
-State 29,181 / Control 3,400 / Interface 1,399 / Conversion 346 /
-Structure 6,974 — which is the God-object-to-SoC move the playbook describes.
+State 22,207 / Structure 6,974 / Control 3,400 / Interface 1,399 /
+Conversion 346 (sums to 34,326) — which is the God-object-to-SoC move the
+playbook describes.
+
+> ⊘ Corrected 2026-09-10 (codex P2 on PR #1). An earlier revision of this
+> line published State as 29,181, which made the breakdown sum to 41,300
+> against a stated 34,326 and contradicted `ore/pass2-census.md` committed
+> beside it. The cause: 22,207 + 6,974 = 29,181 — State was conflated with
+> Structure and Structure then listed again, double-counting it. The census
+> file was always right; the prose was not.
 What it did NOT buy is any claim about Rust.
 
 The next gate has to be the playbook's **three-axis mint gate**
