@@ -7,6 +7,10 @@ name = "openggs-core"
 version = "0.1.0"
 
 [[package]]
+name = "openggs-furnace"
+version = "0.1.0"
+
+[[package]]
 name = "openggs-spo"
 version = "0.1.0"
 

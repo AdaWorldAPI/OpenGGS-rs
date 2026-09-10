@@ -1,0 +1,13 @@
+[package]
+name = "openggs-furnace"
+description = "Ore -> furnace -> slag over the OpenGGS C++ behavioural harvest: melts the ordered event ore into flat, facet-addressed rows under a data-as-config convention, and ledgers what resisted."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+
+[lints]
+workspace = true

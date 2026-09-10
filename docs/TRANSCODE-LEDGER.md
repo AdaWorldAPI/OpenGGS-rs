@@ -3,6 +3,107 @@
 Append-only. New entries at the top; existing entries are corrected in place
 only by adding a dated `⊘` note, never by deletion.
 
+## Furnace pass (2026-09-10) — ore → furnace → slag → repeat
+
+Applied the `ruff_r2il` method (`.claude/knowledge/consumer-transcode-furnace-playbook.md`,
+`ruff_r2il::{ore,furnace,slag,convention}`) to the OpenGGS harvest. New crate:
+`openggs-furnace`, 36 tests.
+
+| stage | module | what it does here |
+|---|---|---|
+| intake arm | the `ruff_cpp_spo` harvest | lossless, untouched, not re-extracted |
+| ore | `ore` | 34,326 typed facts over the 4 TSVs, axes interned in SORTED order so an address is stable across runs |
+| convention | `convention` | radix tree over facet prefixes, longest-prefix-wins. **A config FILE, not match arms** |
+| furnace | `furnace` | melt → flat `FlatFact { id, facet, concern, a, b }`, concern-separated |
+| slag | `slag` | named residuals, addressed, ranked by shape. No `Other`, ever |
+| repeat | `HarvestReport::slag_shapes` | the top shape names the next convention row |
+
+Facet is the **V3 content-blind 4+12** shape: `classid u32 = 0` (zero-fallback
+ladder: default class, prefix routing dormant — the same sanctioned reading
+`ruff_r2il::mgra` uses for a 6502 image) plus six `(u8:u8)` rails —
+`unit · function · scope · depth:kind · seq · symbol`. Never widened to a u16
+or a u24. `const _: () = assert!(size_of::<Facet>() == 16)`.
+
+### Measured, two passes, no Rust changed between them
+
+| | pass 1 | pass 2 |
+|---|---|---|
+| convention | `ore/convention.pass1.ggs` (3 kinds, 1 row) | `ore/convention.pass2.ggs` (13 kinds, 13 rows) |
+| enumerated | 34,326 | 34,326 |
+| melted | 21,854 | 34,326 |
+| residual | 12,472 | 0 |
+| conserved | true | true |
+
+Pass 1's slag was ten shapes, every one `EventKindNotInConvention`, ranked
+`ScopeExit`/`ScopeEnter` 3,487 each · `Condition` 1,688 · `Branch` 1,617 ·
+`Call` 1,260 · `Decl` 353 · `Cast` 346 · `Param` 139 · `Break` 69 ·
+`Return` 26. Each shape named exactly one row. Pass 2 is that list as config.
+Artifacts: `ore/pass{1,2}-census.md`, `ore/pass{1,2}-slag-shapes.tsv`.
+
+### F-3 — residual hit 0 in ONE pass, and that is a WEAKNESS, not a win
+
+The playbook says repeat until the slag pile stops shrinking. It stopped
+immediately, which means the pass-1 melt gate is too easy: *"does the
+convention name this event kind"* is satisfied by any complete list of the
+13 kinds the harvest emits. A gate that a 13-line file fully discharges
+measures the file, not the corpus.
+
+What the pass genuinely bought is the **concern-separated, addressed
+decomposition** — 34,326 rows at stable 16-byte coordinates, split
+State 29,181 / Control 3,400 / Interface 1,399 / Conversion 346 /
+Structure 6,974 — which is the God-object-to-SoC move the playbook describes.
+What it did NOT buy is any claim about Rust.
+
+The next gate has to be the playbook's **three-axis mint gate**
+(`CONCEPT ⟺ METHOD ∧ STORAGE ∧ STRUCTURE`), which a kind list cannot
+discharge. Unbuilt.
+
+### F-4 — control density does NOT split data from behaviour (negative result)
+
+The hypothesis was a bimodal corpus: tables near 0, algorithms far from it,
+a threshold in the valley between. It was built on two functions —
+`PC_Define` (131 writes, 2 branches) against `PC_Run` (10 branches in 21
+scopes) — and those two do differ.
+
+Over all 181 functions there is **no valley**. Unimodal and smooth:
+min 0.000 · p25 0.045 · median 0.087 · p75 0.134 · max 0.255, bucket counts
+decaying monotonically (58 / 49 / 39 / 30 / 4 / 1 in 0.05-wide bins). So any
+threshold is an arbitrary cut, and `Census::data_shaped` must not be read as
+a classifier. The synthetic unit test passed because it asserted the two
+constructed extremes — exactly the vacuous-assertion shape: it could not
+have failed on this corpus either way.
+
+The one non-arbitrary criterion is `threshold = 0.0`: functions with no
+`Control` row at all. That selects **17 of 181** (`defineAngles` with 64
+state rows and zero control is the clean positive; also `AUDIO_Define`,
+`loadTextures`, the `*_Draw` routines). It is also NARROW — **`PC_Define`,
+the corpus's most table-shaped function, is not among them**, because its
+single file-open error check contributes two Control rows. A criterion that
+misses the canonical positive case is weak, and `a_single_guard_is_enough_to_leave_the_zero_control_set`
+pins that so it cannot be widened silently.
+
+### F-5 — the two oracles are identified but only half-available
+
+The playbook requires two independent witnesses that fail differently.
+Mapped onto a game:
+
+| oracle | witness here | state |
+|---|---|---|
+| **value parity** | the `.lvl` stage file — the legacy data, byte-exact | PARTIAL: `openggs-stagefile` decodes the shipped `classic.lvl` at a twice-measured stride, but there is no encode side, so no round-trip byte-parity test |
+| **structure parity** | the Klickwege equivalent: the screen/loop graph (`LOOP_Menu` → `LOOP_Gameloop` → `LOOP_Options` …), harvested from the ore's 1,260 `Call` events, never authored | NOT BUILT |
+
+Neither is the frame-by-frame physics parity F-1's successor still needs.
+Three distinct unmeasured things, named separately.
+
+### Coverage is STILL 13 / 181
+
+The furnace emits no Rust. It produced the map, the addressed decomposition
+and the measurements above; it did not transcode a single additional
+function, and `openggs-spo`'s ledger is unchanged. Anyone reading "34,326
+facts melted" as progress on the port would be reading it wrong.
+
+______________________________________________________________________
+
 ## What exists today (2026-09-10)
 
 | Crate | Role | State |

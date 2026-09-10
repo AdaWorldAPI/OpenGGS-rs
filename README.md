@@ -13,6 +13,7 @@ see [`docs/TRANSCODE-LEDGER.md`](docs/TRANSCODE-LEDGER.md).
 crates/openggs-core       simulation: world, player, physics, tile collision (no SDL, no I/O)
 crates/openggs-stagefile  reader for the .lvl stage-file format
 crates/openggs-spo        the libclang harvest inventory + the coverage ledger
+crates/openggs-furnace    ore -> furnace -> slag -> repeat over that harvest
 ore/functions.tsv         the harvest, verbatim: 181 function definitions from 55 TUs
 ```
 
@@ -44,7 +45,22 @@ number cannot drift away from the corpus.
 
 Coverage means "a Rust routine was transcoded from this C++ function". It does
 **not** mean behavioural parity with the original binary, which is unmeasured;
-the ledger names the probe that would establish it.
+the ledger names the probes that would establish it.
+
+## The furnace
+
+`openggs-furnace` applies the workspace's ore/furnace/slag method to that
+harvest: 34,326 typed facts melt into flat, concern-separated rows at stable
+16-byte addresses, under a convention that lives in a **config file** rather
+than in match arms, and whatever resists is reported at the address where it
+resisted, ranked by shape. Two passes are committed as evidence
+(`ore/pass{1,2}-census.md`): residual 12,472 -> 0 with no Rust changed between
+them, only convention rows added.
+
+Read the ledger before quoting those numbers. The residual reaching 0 in one
+pass is a weakness of the melt gate, not a finished corpus; the control-density
+measure did **not** separate data from behaviour (unimodal, median 0.087, no
+valley); and the furnace emits no Rust, so **coverage is still 13/181**.
 
 ## Build
 

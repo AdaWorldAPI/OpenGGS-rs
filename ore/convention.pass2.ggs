@@ -1,0 +1,38 @@
+# OpenGGS furnace convention — PASS 2.
+#
+# What changed from pass 1, and WHY: pass 1's slag was ten shapes, all
+# `EventKindNotInConvention`, ranked ScopeExit/ScopeEnter 3487 each, Condition
+# 1688, Branch 1617, Call 1260, Decl 353, Cast 346, Param 139, Break 69,
+# Return 26. Each shape named exactly one row to add. This file is that list,
+# turned into config — no Rust changed between the two passes.
+#
+# Concerns are assigned HERE, per kind, at the corpus-wide default depth. That
+# assignment is the thing the furnace module is forbidden from knowing.
+
+classify Read
+classify Write
+classify ReadWrite
+classify Decl
+classify Call
+classify Condition
+classify Branch
+classify Cast
+classify Param
+classify Break
+classify Return
+classify ScopeEnter
+classify ScopeExit
+
+row depth=0 concern=State     kind=Read
+row depth=0 concern=State     kind=Write
+row depth=0 concern=State     kind=ReadWrite
+row depth=0 concern=State     kind=Decl
+row depth=0 concern=Control   kind=Condition
+row depth=0 concern=Control   kind=Branch
+row depth=0 concern=Control   kind=Break
+row depth=0 concern=Control   kind=Return
+row depth=0 concern=Structure kind=ScopeEnter
+row depth=0 concern=Structure kind=ScopeExit
+row depth=0 concern=Interface kind=Call
+row depth=0 concern=Interface kind=Param
+row depth=0 concern=Conversion kind=Cast

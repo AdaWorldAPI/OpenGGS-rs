@@ -1,0 +1,12 @@
+# OpenGGS furnace convention — PASS 1 (bootstrap).
+#
+# Deliberately minimal: state reads and writes only, one corpus-wide row. Every
+# other event kind is expected to land in the slag, and the slag is what names
+# the rows pass 2 adds. A bootstrap convention that already classified
+# everything would produce no residual and therefore no signal.
+
+classify Read
+classify Write
+classify ReadWrite
+
+row depth=0 concern=State
