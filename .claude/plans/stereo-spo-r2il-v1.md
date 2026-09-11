@@ -12,12 +12,47 @@
 
 ## 0. The thesis
 
-A source harvest alone cannot grade behaviour. `ruff_cpp_spo` enumerates
-*structure* (181 free functions in the OpenGGS corpus) and stops at the body;
-`ruff_r2il` / `r2sleigh` lift *behaviour* but must first find the function. The
-two are **two eyes on one population**, and their **disparity is the
-measurement** — the frequency and confidence that neither eye can produce
-alone.
+> **⊘ AMENDED 2026-09-11 (A-1).** The original opening read *"A source harvest
+> alone cannot grade behaviour … `ruff_cpp_spo` enumerates structure and stops
+> at the body."* That was defensible when this arc was viewed through the
+> signature plane alone. It is **too strong and is corrected below**, on
+> evidence `ruff` PR #118 produced after this plan was written. Struck, not
+> deleted: the passive-inventory framing is wrong, and a future session should
+> see that it was held and why it failed.
+
+**The source eye can understand and classify behaviour. What it cannot do is
+independently warrant or calibrate its own interpretation.**
+
+`ruff` is not a passive inventory. It already carries ordered behavioural ore
+(`MethodOre` / `OreEvent` / `OreScope`, present in **both** the cpp and ruby
+frontends), scopes and control, reads / writes / raises / calls, symbol roles,
+and an actual behavioural classifier (`recipe::classify(&impl BodyFacts) ->
+RecipeCentroid`). That is active interpretation, not enumeration.
+
+`ruff_r2il` / `r2sleigh` are therefore **not what makes the arc behavioural**.
+They are the second witness that can corroborate, contradict or measure an
+interpretation the source eye has already made.
+
+```
+   Ruff ACTIVE source understanding
+                 x
+   R2IL machine-behaviour eye
+                 v
+          stereo disparity
+                 v
+       epistemic calibration
+```
+
+and NOT:
+
+```
+   passive source inventory  x  R2IL  ->  behaviour magically appears
+```
+
+The consequence for everything below is a scoping one, not a demolition:
+stereo does not create behavioural understanding, it prices it. Every `(f, c)`
+in this plan is a **confidence in an existing interpretation**, never the
+interpretation itself.
 
 Downstream, that `(f, c)` does not stay a float. It is **tokenised** into
 already-shipped bit fields of `CausalEdge64`: the i4 inference mantissa (rule +
@@ -128,6 +163,17 @@ no column names, no domain concepts, no corpus, no source, no licence terms.
 | L-60 | **The 5+3 council is STRICTLY ordered**: the 5 streamline into a hardened draft FIRST; only then do the 3 attack the hardened object. Attacking unhardened material invites reactive coding. | `[G]` |
 | L-61 | **Board hygiene:** a PR that adds a type, plan, deliverable or finding updates the board in the SAME commit. `SUPERSESSION-INDEX.md` is generated and regenerated **LAST**, after the board writes, because the board is one of its inputs. | `[G]` |
 
+### 1.6b Evidence added after this plan was written (2026-09-11, `ruff` #118)
+
+Append-only. These rows are the basis of amendments A-1 through A-5.
+
+| id | finding | grade |
+|---|---|---|
+| L-64 | **The source eye is ACTIVE, not a passive inventory.** `ruff` already carries ordered behavioural ore (`MethodOre` / `OreEvent` / `OreScope` — present independently in `ruff_cpp_spo::events` AND `ruff_ruby_spo::events`), scopes and control, reads/writes/raises/calls, symbol roles, and a behavioural classifier (`recipe::classify(&impl BodyFacts) -> RecipeCentroid`). This **corrects L-3's framing and this plan's original thesis** (see A-1): what the source eye lacks is not behavioural understanding but the ability to warrant its own interpretation. | `[G]` |
+| L-65 | **ACTIVE INTAKE EVIDENCE != SHARED SPO/IR PROJECTION.** `CppFunction::calls` (every callee) and `CppMethod::calls` (the closed mutator set) are semantically incompatible, and the guard forbidding the mapping is architectural evidence, not defensive programming: **ruff knows more about behaviour than one downstream carrier can honestly express.** The two wrong resolutions are overloading the field or minting `dispatches_to` to make types line up. The right one is the open question in §2.0. | `[G]` |
+| L-66 | **The corpus cannot witness its own machinery.** Four latent defects landed on #118 in one morning — diagnostics gap, `is_static` overload, overload dedup, namespace collapse — each invisible because OpenGGS has no unresolved includes in the measured run, no relevant file-scope statics, no overloads and no namespaces. **Measured: the dedup drops 0 of 181.** A corpus that cannot exercise a mechanism cannot falsify it. | `[G]` |
+| L-67 | **The reviewers kept finding facts ruff KNOWS but its shared projection cannot carry.** Read as a nuisance this is four bug reports; read correctly it is repeated, independent evidence for why an intake layer distinct from the projection exists at all. This is the strongest result of the #118 arc and it was accidental. | `[H]` |
+
 ### 1.7 The process finding about this arc itself
 
 | id | finding | grade |
@@ -138,6 +184,59 @@ no column names, no domain concepts, no corpus, no source, no licence terms.
 ---
 
 ## 2. The architecture — five stages, every carrier already shipped
+
+### 2.0 The Active Code-Graph (A-2, added 2026-09-11) — a NAME, not yet a type
+
+`ruff` PR #118 produced the architectural evidence for a layer this plan had
+left unnamed. `CppFunction::calls` holds every-callee behavioural intake
+evidence. `CppMethod::calls` means something strictly narrower — the closed
+mutator/dispatch vocabulary. The guard that now forbids mapping one onto the
+other is **not merely defensive programming**; it is a boundary:
+
+```
+   ACTIVE INTAKE EVIDENCE   !=   SHARED SPO / IR PROJECTION
+```
+
+**Ruff may know more about behaviour than one downstream carrier can honestly
+express.** The two wrong ways to resolve that are (a) overloading
+`CppMethod::calls`, and (b) minting `dispatches_to` merely to make the types
+line up. Both are the shape this arm has already rejected twice.
+
+The right resolution is to record the proof obligation:
+
+> **Where does full behavioural intake live, BEFORE lossy projections such as
+> `ModelGraph` / SPOFC?**
+
+So the pipeline gains one *conceptual* stage:
+
+```
+   source AST
+        v
+   ordered ore / calls / scopes / symbols / recipes
+        v
+   ACTIVE CODE-GRAPH
+        v                    v
+   SPOFC projection     R2IL stereo comparison
+```
+
+**Do NOT begin by creating `struct CodeGraph`.** The first task is to determine
+whether the Code-Graph already IS the composition of pieces that exist today —
+verified present in-tree, 2026-09-11:
+
+| piece | where | `[G]` |
+|---|---|---|
+| `MethodOre` / `OreEvent` / `OreScope` | `ruff_cpp_spo::events`, and independently `ruff_ruby_spo::events` | ordered behavioural ore, already per-frontend plural |
+| full `CppFunction::calls` | `ruff_cpp_spo::lib` | every-callee intake, currently reaching no triple |
+| `BodyFacts` (trait) + `RecipeCentroid` | `ruff_spo_triplet::recipe` | the behavioural classifier |
+| `BodyFacts` (struct) | `ruff_python_dto_check::extractors::body` | the python arm's own body evidence |
+| structural `Facet` / address | `ruff_spo_address` | the V3 4+12 identity |
+
+**A carrier is added ONLY if a behavioural relation the stereo comparison
+requires cannot be expressed by those pieces.** That is a finding to reach, not
+a design to start from — and this plan's own L-62 records five occasions where
+this arc built a mechanism that already existed one file away.
+
+### 2.1 The five stages
 
 ```
   C++ eye                                  binary eye
@@ -190,6 +289,51 @@ are not the same claim, and 3,978 rows hang on it. `[G]` for the table, `[H]`
 for the claim that the alignment is load-bearing rather than coincidental — that
 is what F-8 tests.
 
+### 2.2 Endgame orientation (A-5, added 2026-09-11) — context, not scope
+
+**The long-term objective is software-as-harvest: `ruff` and the other intake
+arms reconstruct active behaviour from legacy software; `lance-graph` reasons
+over that behaviour; sufficiently warranted reusable semantics may be canonised
+as OGAR Active Records and lowered through `ogar-loco` as callable microcode.
+The current stereo probe measures ONE PREREQUISITE of that path; it does not
+claim the promotion path is already built.**
+
+```
+   stone-age software
+        v  harvest
+   Ruff ACTIVE Code-Graph
+        v
+   lance-graph  (active semantic / relational / epistemic reasoning)
+        v
+   stable reusable behaviour
+        v
+   OGAR  (Open Graph of Active Record — canonical active semantics)
+        v
+   ogar-loco  (microcode / orchestration)
+```
+
+Four fences on that diagram, so it is read as orientation and not as a mandate:
+
+1. **`Lance` is not `lance-graph`.** Lance is the storage engine (upstream-
+   authoritative, never forked); `lance-graph` is the spine. Conflating them is
+   a category error this workspace has already ruled on.
+2. **The arms stay PLURAL.** Ruff's Code-Graph, R2IL / `ogar-r2il`, SPOG, RO,
+   DeepNSM / CAM-PQ, ARM and the rest are *eyes and dogfood* for `lance-graph`
+   — never candidates for one universal physical encoding.
+3. **The common waist is a HYPOTHESIS, not a carrier.** That `S : P : O` ~
+   `P(S, O)` ~ `Fn_P(S, O)` is a thing to TEST. Nothing in this plan mints it.
+4. **The OGAR/SurrealQL lesson is about provenance, not absence.** OGAR always
+   had a behavioural IR — it is the Open Graph of *Active Record*. What that
+   episode taught was **not** "behaviour should disappear" but "behaviour must
+   not be interpreted out of storage / DDL". The modern reading to test is
+   `harvested behaviour -> active Code-Graph understanding -> lance-graph
+   warrant / recurrence / semantics -> canonical active P in OGAR -> Fn_P(...)
+   -> compiled execution`. Historical OGAR docs are **evidence for continuity,
+   not an implementation template.**
+
+**This section is orientation. This PR does not implement any of it**, and a
+session that treats §2.2 as a work list has misread it.
+
 ---
 
 ## 3. Waves
@@ -213,6 +357,7 @@ the alternative it rejected (L-63).
 | D-ST-1a | **`PROBE-STEREO-JOIN`**: lift the compiled OpenGGS binary through `r2sleigh-lift`, join to the 181 harvested `CppFunction`s by symbol, and report **four raw numbers**: functions r2il finds; of those, how many join to a harvested symbol; of those, how many agree on arity; of those, how many have a single-entry / single-exit varnode chain. | `r2sleigh-lift`, `ruff_cpp_spo` PR #118 signatures | J1 |
 | D-ST-1b | Publish the **non-join residual by category** (inlined, static-folded, renamed by the linker, absent from the binary, present but unsymbolised). Named slag, no catch-all (L-45). | D-ST-1a | F-4 |
 | D-ST-1c | The 13 already-transcoded functions are the **held-out calibration set**: the hand port is ground truth for those, so the disparity metric can be scored before it is trusted anywhere else. | L-3 | F-5 |
+| D-ST-1d | **`PROBE-SHAPE-FIRES` (A-3).** Run intake + join against a corpus or fixture that genuinely contains C++ namespace and overload structure, and assert the mechanism FIRES there. Does **not** replace OpenGGS as the measured population — it exists to prove the machinery is not inert outside the easiest case (measured: dedup drops 0 of 181 on OpenGGS). | `ruff_cpp_spo`, `ruff_spo_address::Facet` | F-19 |
 
 > **Nothing in W2+ may be built before J1 is green.** Every `(f, c)` downstream
 > is a ratio whose denominator D-ST-1a produces (L-24).
@@ -224,6 +369,31 @@ the alternative it rejected (L-63).
 | D-ST-2a | **`f` = per-fact agreement rate** across the joined population. A fact is a `(subject, predicate, object)` the C++ eye asserts; agreement is the binary eye's dataflow confirming it. | `ruff_spo_triplet::Triple` | F-6 |
 | D-ST-2b | **`c` = accounted-for margin** — the fraction of the function's lifted operations the source-side facts explain. High `c` + low ops = mechanically recoverable; low `c` = the essential-15% hand port, **measured** rather than inferred from control density (L-5/L-6). | D-ST-2a | F-6, F-7 |
 | D-ST-2c | A **new SPOFC provenance tier** whose `(f, c)` is *computed from D-ST-2a/2b* rather than pinned as a constant. Rejected alternative: reusing `CppExtracted (0.95, 0.82)` — those are constants and would silently launder a measurement into a literal (L-16). | `ruff_spo_triplet` provenance | F-6 |
+
+**A-4 ordering constraint (2026-09-11) — raw statistics FIRST, `(f, c)` last.**
+The existing SPOFC provenance tiers are constants, and a stereo similarity score
+is not a NARS confidence. Relabelling one as the other would be the same class
+of error as the `PARITY` marker and the `roundtrip_eq` claim already corrected
+on `ruff` #118: an artifact asserting something about its own verification that
+it has not earned.
+
+So D-ST-2a/2b/2c do **not** emit an `(f, c)` on first landing. They emit and
+keep **separate raw statistics**:
+
+- joined population
+- corroborated relations
+- contradicted relations
+- behavioural coverage
+- non-join residual (categorised, per D-ST-1b)
+
+`(f, c)` is derived only once the plan states, in writing, **which of those are
+the sufficient statistics and what falsifies the derivation**. Until then the
+raw five are the deliverable and the tier stays unminted.
+
+F-7's pre-registered correlation threshold is load-bearing precisely because the
+previous behavioural proxy already failed: control density was unimodal and did
+not separate data from behaviour (L-5/L-6). A second proxy that is never tested
+against that failure would be the same mistake with a new name.
 
 ### W3 — The epistemic wiring (substrate-side, gated)
 
@@ -283,6 +453,8 @@ is deleted, per the falsifiability rule (L-42).
 | F-16 | A proposed function boundary is rejected when the evidence is removed. | the proposer emits the same boundaries from no evidence | run it against a stripped corpus and assert the output differs |
 | F-17 | Coverage reports structural and behavioural counts **separately**, and the behavioural count matches the number of functions with an actual Rust body. | the two are summed into one number | a function counted behavioural with no body fails |
 | F-18 | **The invariant-has-a-test check.** Every "must not" in §2's table has a named test in this table. | a prose invariant has no test — the `G11` failure mode (L-57) | this table is the test's index; a missing row is the failure |
+| F-19 | **The shape check fires (A-3).** On the namespace/overload corpus, the dedup discriminates non-trivially AND at least one identity is distinguished only by scope. | the mechanism is inert there too — then it is untested everywhere, not just on OpenGGS | pair with the OpenGGS run, where the same code drops 0 of 181; the two runs must DIFFER |
+| F-20 | **`(f, c)` is not emitted before its statistics are stated (A-4).** No provenance tier carrying a computed `(f, c)` exists while the sufficient statistics and their falsifier are unwritten. | a stereo score ships relabelled as NARS confidence | the five raw statistics are present and separately reported |
 
 ### 4.1 Disable-run discipline (mandatory, from L-55)
 
@@ -303,6 +475,37 @@ what dies, so a bad result is a result and not a re-scope.
 - **Green:** r2il joins a majority of the 181 with arity agreement.
 - **Amber:** it joins a minority. The stereo metric survives but only over that subset; every downstream claim is scoped to it **explicitly**, and coverage claims for the rest stay at zero.
 - **KILL:** it joins almost nothing (inlining, no symbols). Then there is no second eye on this corpus, the stereo thesis is **false for OpenGGS**, and the honest outcome is: the data-shape oracle (L-1) stands, the structure oracle does not exist here, and the transcode is a hand port with SPO doing placement only. **Say that and stop** — do not substitute an execution-diff harness under the same D-ids, which would be a different plan wearing this one's name.
+
+**A-3 scoping (2026-09-11) — J1 is not weakened, it is bounded.** Whatever it
+returns, *"J1 proves or kills the stereo thesis for OpenGGS, not for arbitrary
+C++."* OpenGGS stays the known population and its denominator (181) is not to be
+changed or supplemented with an invented rate.
+
+The reason for the bound is measured, not cautious. `ruff` PR #118 accumulated
+**four** latent correctness defects in one morning — the diagnostics gap, the
+`is_static` overload, the overload dedup, and the namespace collapse — and every
+one was invisible on this corpus because its shape is unusually simple:
+
+| shape the corpus lacks | what stayed untested |
+|---|---|
+| unresolved includes in the measured run | the error-diagnostic skip |
+| file-scope `static` cases | the linkage/staticness distinction |
+| overloads | the `(name, params)` key |
+| namespaces | the qualified-name identity |
+
+A corpus that cannot exercise a mechanism cannot witness its failure, so a green
+J1 on OpenGGS alone would carry less information than its number suggests.
+
+**Therefore J1 is PAIRED with an anti-vacuity SHAPE check (`D-ST-1d`):** run the
+intake and join against a corpus or fixture that actually contains C++ namespace
+and overload structure, and assert the mechanism *fires* there — a non-zero
+dedup discrimination and at least one scope-distinguished identity. Measured
+2026-09-11 on OpenGGS: the dedup drops **0 of 181**, so on this corpus that
+machinery is inert and unwitnessed.
+
+This does **not** replace OpenGGS. The second shape exists only to prove the
+intake/join mechanism can fire outside the easiest case; the measured population
+remains the first one.
 
 ### J2 — Is the i4 change safe? (gates W3d, W4)
 

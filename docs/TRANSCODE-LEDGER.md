@@ -260,3 +260,18 @@ for this corpus, the `.lvl` data-shape oracle (F-1) still stands, and the
 transcode is an honest hand port with the harvest doing placement only.
 
 Append-only. Regrade in place with a dated note; never delete a row.
+
+### Amendment A-1..A-5 (2026-09-11) — surgical, on evidence from ruff #118
+
+The plan is **amended, not rewritten**: the 63-row ledger, W0–W6, kill joints,
+falsifiers, Jirak discipline and the J1 gate all stand unchanged.
+
+| id | amendment |
+|----|-----------|
+| A-1 | **Thesis corrected.** "A source harvest cannot grade behaviour" was too strong and is struck in place. The source eye CAN understand and classify behaviour; what it cannot do is independently warrant or calibrate its own interpretation. R2IL is the second witness that prices an existing interpretation — it is not what makes the arc behavioural. |
+| A-2 | **The Active Code-Graph is NAMED, not minted.** `CppFunction::calls` vs `CppMethod::calls` is architectural evidence that active intake evidence is not the shared SPO/IR projection. Recorded as a proof obligation — where does full behavioural intake live before the lossy projection — with the existing pieces that may already compose it. No `struct CodeGraph`. |
+| A-3 | **J1 bounded, not weakened.** It proves or kills the stereo thesis for OpenGGS, not for arbitrary C++. Paired with `D-ST-1d` / `F-19`, a shape check on a corpus that actually has namespaces and overloads, because four latent defects landed on #118 that this corpus structurally cannot exercise (the dedup drops 0 of 181). OpenGGS remains the measured population. |
+| A-4 | **`(f, c)` held back.** Raw statistics first — joined population, corroborated, contradicted, behavioural coverage, non-join residual. A stereo similarity score is not a NARS confidence, and the tier stays unminted until the sufficient statistics and their falsifier are written down (`F-20`). |
+| A-5 | **Endgame stated once, as orientation.** Software-as-harvest through `lance-graph` to OGAR Active Records and `ogar-loco`, with four fences: Lance is not lance-graph, the arms stay plural, the `S:P:O ~ P(S,O) ~ Fn_P(S,O)` waist is a hypothesis not a carrier, and the SurrealQL lesson was about provenance rather than the absence of behaviour. This PR implements none of it. |
+
+New rows: `L-64`..`L-67` (§1.6b, append-only), `D-ST-1d`, `F-19`, `F-20`.
