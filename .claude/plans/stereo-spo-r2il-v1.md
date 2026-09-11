@@ -54,12 +54,28 @@ stereo does not create behavioural understanding, it prices it. Every `(f, c)`
 in this plan is a **confidence in an existing interpretation**, never the
 interpretation itself.
 
-Downstream, that `(f, c)` does not stay a float. It is **tokenised** into
-already-shipped bit fields of `CausalEdge64`: the i4 inference mantissa (rule +
-chain direction + magnitude), the 2-bit truth field (mediator structure, read
-through a declared lens), and the 3-bit `ReasoningBand` (the
-`Relation -> Causal` promotion ladder). The epistemic layer that reasons about
-the not-knowing is MUL.
+> **⊘ SUPERSEDED by C-4 (2026-09-11).** This paragraph said `(f, c)` is
+> "tokenised into" `CausalEdge64` — a one-way promotion, causality finally
+> earned. **That is the wrong direction.** See §2.-1: CE64 is the compact wire
+> image of the SPOFC relation, encode/decode, not a later causal-only result.
+> Struck in place.
+
+`CausalEdge64` is the **compact wire/ABI image of the SPOFC relation itself**:
+
+```
+   semantic relation
+        v
+   S : P : O : f : c
+        v  encode
+   CausalEdge64
+        v  decode
+   S : P : O : f : c
+```
+
+Its further fields are **lenses over that packed relation** — projection/mask,
+inference grade, direction, witness state — not a separate causal payload that
+appears only once Pearl causality is established. The epistemic layer that
+reasons about the not-knowing is MUL.
 
 **What is new here is the wiring and the probe, not the substrate.** Every
 carrier named below already exists. The single most common failure this plan
@@ -174,6 +190,16 @@ Append-only. These rows are the basis of amendments A-1 through A-5.
 | L-66 | **The corpus cannot witness its own machinery.** Four latent defects landed on #118 in one morning — diagnostics gap, `is_static` overload, overload dedup, namespace collapse — each invisible because OpenGGS has no unresolved includes in the measured run, no relevant file-scope statics, no overloads and no namespaces. **Measured: the dedup drops 0 of 181.** A corpus that cannot exercise a mechanism cannot falsify it. | `[G]` |
 | L-67 | **The reviewers kept finding facts ruff KNOWS but its shared projection cannot carry.** Read as a nuisance this is four bug reports; read correctly it is repeated, independent evidence for why an intake layer distinct from the projection exists at all. This is the strongest result of the #118 arc and it was accidental. | `[H]` |
 
+### 1.6c Operator corrections, 2026-09-11 (basis of amendments C-1..C-7)
+
+| id | finding | grade |
+|---|---|---|
+| L-68 | **V3 is storage; V4 is IR. The code-graph is a PHASE, not a layer:** during discovery the IR IS a code-graph; after discovery IR/AR belongs to compile. **OGAR is dumb AR + adapters** — it mints and adapts, never reasons. **Reasoning is always in lance-graph; consumers reuse.** | `[G]` operator |
+| L-69 | **`CausalEdge64` is the compact wire image of the SPOFC relation**, encode/decode — not a causal-only result that appears once Pearl causality is earned. Its further fields are lenses over the packed relation. **This supersedes the plan's original "tokenised into" framing.** | `[G]` operator |
+| L-70 | **Four axes, not five bits of causality.** Semantic `P` (`CAUSES`/`SUPPORTS`) = what the relation MEANS; bits 59–60 = how it is mediated; bits 61–63 = what reasoning it entitles; plus the SPO projection. *`P = CAUSES` asserts meaning; `band = Causal` grants permission to reason causally.* `P = CAUSES` ∧ `topology = IndirectUnknown` is legitimate and rich. | `[G]` operator |
+| L-71 | **"Tarski" is already taken, with a different meaning.** `Belief::rung` (`lance-graph-planner/src/nars/belief.rs:96`) is a **derivation depth** — 0 observed, derived = `max(premise rungs)+1`, fixed at creation, revision does not change it. Metalanguage level, NOT admissibility. Calling bits 61–63 "Tarski" would collide; call them the **reasoning-grade / admissibility lattice**. The Tarski rung is a fifth, independent axis. Separately, `dismech_evidence::Supports` (`SUPPORT`/`PARTIAL`/`REFUTE`/`NO_EVIDENCE`, ~89,800 occurrences) is an **evidence stance**, not a predicate — do not alias it to a semantic `P = SUPPORTS`. | `[G]` verified in-tree |
+| L-72 | **R2IL is EXECUTED, never pre-converted** (operator ruling 2026-08-26, `ogar-r2il/src/lib.rs`), and `ogar-r2il` deliberately carries **no `r2sleigh` dependency**. Its `project(&slab, shape, &mask)` already provides the same-slab two-readings mechanism: one body's 360 content bytes hold 180/120/90 calls depending on `LaneShape`, masked and lazy, *"a shape is a lens, not a migration"*. **The stereo comparison's mechanism is already shipped.** | `[G]` |
+
 ### 1.7 The process finding about this arc itself
 
 | id | finding | grade |
@@ -183,9 +209,101 @@ Append-only. These rows are the basis of amendments A-1 through A-5.
 
 ---
 
-## 2. The architecture — five stages, every carrier already shipped
+## 2. The architecture
 
-### 2.0 The Active Code-Graph (A-2, added 2026-09-11) — a NAME, not yet a type
+### 2.-1 The model (C-1..C-5, operator-corrected 2026-09-11)
+
+**One line:** *lance-graph **is** the CodeGraph; SPOFC is its relational algebra;
+`CausalEdge64` is the compact wire image of that algebra; R2IL is another native
+behavioural plane, not something that must first be converted into SPO.*
+
+| pin | statement |
+|---|---|
+| **C-1** | **V3 is storage. V4 is IR.** |
+| **C-2** | The code-graph is a **PHASE, not a layer.** *During* discovery the IR **is** a code-graph. *After* discovery, IR/AR belongs to **compile**. |
+| **C-3** | **OGAR is dumb AR + adapters.** It mints and adapts; it never reasons. **Reasoning is always in lance-graph, and consumers reuse it.** |
+| **C-4** | **CE64 ⇄ SPOFC**, encode/decode — never "reasoning → causality finally earned → CE64". |
+| **C-5** | Bits **59–60 say how the relation is mediated**; bits **61–63 say how strongly the system is entitled to reason from it**. **`CAUSES`/`SUPPORTS` say what the relation MEANS** — they are semantic `P`, never positional bit meanings. |
+
+```
+   Ruff ore            R2IL
+      │                  │
+      └──────┬─────────┘
+             v
+        lance-graph
+         CodeGraph
+             │
+       reason in SoA
+             │
+             v
+      SPOFC relations
+             ⇅
+       CausalEdge64
+         wire form
+```
+
+**Why this corrects an earlier hedge of mine.** §2.0 below and my session
+reasoning said *"lance-graph does not become the code-graph; the code-graph is a
+tenant layout lance-graph queries"* — hedging toward the assembler-vs-storage
+fence. That fence is about **minting**, not **reasoning**. Reasoning is
+lance-graph's by rule (C-3), so the code-graph **is** there. OGAR still mints and
+adapts. The two were never in tension and I treated them as if they were.
+
+**Consequence for SPOFC:** without lance-graph, SPOFC is a mostly mythical tuple
+— the interesting `f`/`c`, witness accumulation, masks, history and cross-plane
+reasoning have no machinery behind them. Inside lance-graph, the R2IL plane, the
+SPO plane, the `f`/`c` evidence, the CE64 wire and the temporal/witness planes
+are all operable on **one SoA substrate**.
+
+### 2.-1a The four axes (C-5) — and the Tarski collision to avoid
+
+Five bits are **not** "five bits of causality". They are two orthogonal
+epistemic controls, and neither is the relation's meaning:
+
+| axis | carrier | question |
+|---|---|---|
+| **semantic `P`** | the predicate | `CAUSES` / `SUPPORTS` / `ENABLES` — **what does the relation MEAN?** |
+| SPO projection | `S`/`P`/`O` subset | which Pearl vertices |
+| **mediation witness** | **bits 59–60** | `Direct` / `IndirectKnown` / `IndirectUnknown` / `Unknown` — **how is it mediated?** |
+| **reasoning entitlement** | **bits 61–63** | `Surface`→`Association`→`Relation`→`Causal`→`Counterfactual`→`Perspective`→`Meta`→`Transcendent` — **what inference regime may treat it as admissible?** |
+
+**The separation that kills a whole bug class:**
+
+> `P = CAUSES` is an **assertion about meaning**.
+> `band = Causal` is **permission to reason causally from it**.
+
+So `Relation → Causal` is never "the predicate changed from `SUPPORTS` to
+`CAUSES`" — it is "the accumulated evidence crossed the threshold at which
+causal reasoning is permitted". This is what forbids the old failure of
+reinterpreting a semantic `CAUSES` bit as a `CausalMask` bit.
+
+**`P = CAUSES` with `topology = IndirectUnknown` is a legitimate, rich state:**
+*enough evidence for a causal relation, and enough to know it is mediated, but
+not enough to name the mediator.* Far richer than a boolean causal flag — and
+it is why B-4's correction (unknown is not false) was necessary rather than
+merely careful.
+
+> **⚠ Do NOT call bits 61–63 the "Tarski rung".** Verified in-tree
+> 2026-09-11: `lance_graph_planner::nars::belief::Belief::rung` **already owns
+> that name with a different meaning** — a derivation depth (*"0 observed;
+> derived = `max(premise rungs)+1`, fixed at creation — revision does NOT
+> change it"*), i.e. how many inference steps from observation. That is
+> **metalanguage level**, not admissibility. Reusing the word would be the
+> "same word, two contracts" trap that `ogar-r2il` already refuses between
+> loco's core `ADD` and R2IL's `IntAdd`. Call 61–63 the **reasoning-grade /
+> admissibility lattice**; the Tarski rung is a **fifth, independent axis**.
+
+> **⚠ `SUPPORTS` is also already overloaded.**
+> `dismech_evidence::Supports` is a 4-state **evidence stance**
+> (`SUPPORT`/`PARTIAL`/`REFUTE`/`NO_EVIDENCE`, ~89,800 measured occurrences) —
+> closer to `f`/`c` polarity than to a predicate. A semantic `P = SUPPORTS` and
+> an evidence stance `Supports::Support` are different things; do not alias.
+
+### 2.0 The Active Code-Graph — the DISCOVERY-PHASE reading (A-2, re-framed by C-2)
+
+> **⊘ Re-framed 2026-09-11.** A-2 called this "a latent layer to NAME". It is
+> **not a layer** — it is the **discovery-phase reading of the IR** (C-2). The
+> `CppFunction::calls` evidence below stands unchanged; only its framing moves.
 
 `ruff` PR #118 produced the architectural evidence for a layer this plan had
 left unnamed. `CppFunction::calls` holds every-callee behavioural intake
@@ -366,7 +484,7 @@ the alternative it rejected (L-63).
 
 | D-id | deliverable | consumes | gate |
 |---|---|---|---|
-| D-ST-2a | **`f` = per-fact agreement rate** across the joined population. A fact is a `(subject, predicate, object)` the C++ eye asserts; agreement is the binary eye's dataflow confirming it. | `ruff_spo_triplet::Triple` | F-6 |
+| D-ST-2a | **`f` = per-fact agreement rate** across the joined population. A fact is a `(subject, predicate, object)` the C++ eye asserts; agreement is the binary eye's dataflow confirming it — **computed against EXECUTED or lensed R2IL, never against R2IL lowered into triples** (C-6). | `ruff_spo_triplet::Triple` | F-6, F-23 |
 | D-ST-2b | **`c` = accounted-for margin** — the fraction of the function's lifted operations the source-side facts explain. High `c` + low ops = mechanically recoverable; low `c` = the essential-15% hand port, **measured** rather than inferred from control density (L-5/L-6). | D-ST-2a | F-6, F-7 |
 | D-ST-2c | A **new SPOFC provenance tier** whose `(f, c)` is *computed from D-ST-2a/2b* rather than pinned as a constant. Rejected alternative: reusing `CppExtracted (0.95, 0.82)` — those are constants and would silently launder a measurement into a literal (L-16). | `ruff_spo_triplet` provenance | F-6 |
 
@@ -456,6 +574,7 @@ is deleted, per the falsifiability rule (L-42).
 | F-21 | **An UNDECLARED lens refuses (B-5).** Projecting the 2-bit field for a class with no `BandDeclarations` entry returns a `BandReadError`, never a plausible ordinal. | it silently yields the `Trust` default — the D-ACR-7 failure mode | pair with a declared class that projects successfully, so the test is not passing on universal refusal |
 | F-22 | **`Dissonant` is derived, never stored; the `TrustTexture`s stay distinct (B-5).** No write path persists a 5th truth ordinal, and the wire enum (`Crystalline`/`Solid`/`Fuzzy`/`Murky`) is never substituted for `contract::mul`'s (`Calibrated`/`Overconfident`/`Uncertain`/`Underconfident`). | a `Dissonant` reaches a stored field, or the two 4-variant homonyms are used interchangeably | assert `TRUTH_STATES == 4` still holds and that a derived `Dissonant` is observable in MUL output while absent from every persisted row |
 | F-19 | **The shape check fires (A-3).** On the namespace/overload corpus, the dedup discriminates non-trivially AND at least one identity is distinguished only by scope. | the mechanism is inert there too — then it is untested everywhere, not just on OpenGGS | pair with the OpenGGS run, where the same code drops 0 of 181; the two runs must DIFFER |
+| F-23 | **No R2IL→SPO lowering exists on the comparison path (C-6).** Grep the stereo code for any construction of a `Triple` (or SPOFC row) from an r2il/varnode value. | such a construction exists — the forbidden conversion is on the path | assert the comparison DOES read r2il (executed or lensed), so the test is not passing because nothing reads it at all |
 | F-20 | **`(f, c)` is not emitted before its statistics are stated (A-4).** No provenance tier carrying a computed `(f, c)` exists while the sufficient statistics and their falsifier are unwritten. | a stereo score ships relabelled as NARS confidence | the five raw statistics are present and separately reported |
 
 ### 4.1 Disable-run discipline (mandatory, from L-55)
@@ -534,6 +653,9 @@ Named so a later session does not read silence as an opening.
 - **No upstream issue, PR or comment filed** on any public repo for the substrate asks in W3 — those are **surfaced to the operator in session**. The i4 change (D-ST-3a) is exactly such an ask.
 - **No execution-diff harness.** It is a legitimate *value*-parity oracle and a different plan; if J1 kills the stereo thesis it gets its own document.
 - **No claim of "MIT proposed X"** until W5 grounds it.
+- **NEVER convert R2IL into SPO (C-6).** Operator ruling 2026-08-26, verbatim in `OGAR/crates/ogar-r2il/src/lib.rs`: *"R2IL is EXECUTED, never pre-converted … converting live V4 R2IL down to a V3 SPO projection before running it is a lossy static shadow of semantics the interpreter already has first-class."* `ruff_r2il` (the ruff-side R2IL→SPO harvest) is explicitly **not on this path and never will be**. R2IL is a native plane (§2.-1); lifting a binary into R2IL is fine, lowering R2IL into triples is not.
+- **Do NOT vendor `r2sleigh` as a submodule.** `ogar-r2il` exists *specifically* so r2sleigh is not a dependency, and calls that "the load-bearing design choice rather than an omission": r2il's opcodes are an **enumeration**, loco needs an **arity table** (82 slots, `0x90..=0xE1`), and taking the crate drags `Varnode`/`SpaceId`/`ArchSpec` into every consumer. Its `lance-graph-contract` edge is a **dev-dependency** to keep the lib surface `ogar-loco`-only.
+- **No hand-rolled code-graph in frontend comments (C-7).** A fact about predicates — *"`CppFunction::calls` is every callee, `CppMethod::calls` is the closed mutator set, they must not alias"* — is a **code-graph relation**, i.e. DATA, queryable and reusable across the cpp / ruby / python / csharp arms. Writing it as a twenty-line prose block in one frontend's example is hand-rolling: it cannot be queried, cannot be reused, and drifts from the code it describes. **The executable guard is right; the prose beside it is the violation.** If the boundary cannot yet be expressed as a relation, that is the §2.0 proof obligation — not a licence to write the paragraph. Measured instances in this arc: the 11-line `is_static` comment and the 20-line `calls` comment, both landed on `ruff` #118 by me.
 - **No internal digest pins** on artefacts this arc produces. Identity gates go on content that means something — row counts, structural invariants, a census.
 
 ## 7. Open questions

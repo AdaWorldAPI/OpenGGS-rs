@@ -289,3 +289,32 @@ New rows: `L-64`..`L-67` (§1.6b, append-only), `D-ST-1d`, `F-19`, `F-20`.
 The five are the plan's own doctrine applied to the plan: anti-vacuity arms that
 cannot fail, a control that is not a control, and an invariant index that did
 not index itself.
+
+### Amendment C-1..C-7 (2026-09-11) — operator corrections to the model
+
+The one line: **lance-graph IS the CodeGraph; SPOFC is its relational algebra;
+`CausalEdge64` is the compact wire image of that algebra; R2IL is another native
+behavioural plane, not something that must first be converted into SPO.**
+
+| id | correction |
+|----|------------|
+| C-1 | **V3 is storage. V4 is IR.** |
+| C-2 | The code-graph is a **PHASE, not a layer** — during discovery the IR *is* a code-graph; after discovery IR/AR belongs to compile. A-2's "name the latent layer" framing is re-framed accordingly. |
+| C-3 | **OGAR is dumb AR + adapters** (mints and adapts, never reasons). **Reasoning is always in lance-graph; consumers reuse.** This corrects a hedge of mine — the assembler-vs-storage fence is about *minting*, not *reasoning*, so the code-graph is in lance-graph and the two were never in tension. |
+| C-4 | **`CausalEdge64` ⇄ SPOFC, encode/decode.** Not "reasoning → causality finally earned → CE64". The plan's original "tokenised into" wording is struck in place. |
+| C-5 | **Four axes, not five bits of causality.** Semantic `P` = what the relation MEANS; bits 59–60 = how it is mediated; bits 61–63 = what reasoning it entitles. *`P = CAUSES` asserts meaning; `band = Causal` grants permission to reason causally.* `P = CAUSES` ∧ `topology = IndirectUnknown` is a legitimate, rich state. |
+| C-6 | **Never convert R2IL into SPO** (operator ruling 2026-08-26). Lifting a binary into R2IL is fine; lowering R2IL into triples is the lossy static shadow the ruling forbids. `D-ST-2a` tightened, `F-23` added, and vendoring `r2sleigh` as a submodule is ruled out — `ogar-r2il` exists precisely so it is not a dependency. |
+| C-7 | **No hand-rolled code-graph in frontend comments.** A fact about predicates is a code-graph relation — data, queryable, reusable across arms — not a twenty-line prose block in one frontend's example. The executable guard is right; the prose beside it is the violation. Two measured instances in this arc, both mine. |
+
+Two collisions caught by checking rather than assuming, both recorded as
+`L-71`: **"Tarski" is already taken** by `Belief::rung` (derivation depth from
+observation, not admissibility), so bits 61–63 are the **reasoning-grade /
+admissibility lattice**; and **`Supports` is already taken** by
+`dismech_evidence` as a 4-state evidence stance, which is not a semantic `P`.
+
+And the mechanism the stereo comparison needs turns out to be **already
+shipped** (`L-72`): `ogar-r2il::project(&slab, shape, &mask)` reads one body's
+360 content bytes as 180/120/90 calls depending on `LaneShape`, masked and
+lazy — *"a shape is a lens, not a migration."*
+
+New rows: `L-68`..`L-72` (§1.6c, append-only), `F-23`.
