@@ -245,3 +245,76 @@ the harvest reads the corpus in place.
 
 `pstaender/giana-sisters-lost-levels` was **not** used: it is a separate
 JavaScript project, not a source for this transcode.
+
+## Plan index
+
+| plan | status | what it carries |
+|------|--------|-----------------|
+| `.claude/plans/stereo-spo-r2il-v1.md` | PROPOSAL (2026-09-11) | The accumulated integration plan for the stereo SPO x R2IL arc: a 63-row graded finding ledger across this repo, `ruff`, `r2sleigh`, `lance-graph`, the consumer arc and sibling doctrine; a five-stage architecture over already-shipped carriers; waves W0-W6; 18 falsification tests each with its anti-vacuity arm; three kill joints (J1-J3); an explicit out-of-scope list; seven open questions. |
+
+**J1 is the arc's gate.** Coverage stays 13/181 and the furnace emits no Rust
+until the stereo join is measured, because every frequency and confidence the
+plan derives is a ratio whose denominator that probe produces. If the join comes
+back near-empty the plan's own KILL clause applies: the stereo thesis is false
+for this corpus, the `.lvl` data-shape oracle (F-1) still stands, and the
+transcode is an honest hand port with the harvest doing placement only.
+
+Append-only. Regrade in place with a dated note; never delete a row.
+
+### Amendment A-1..A-5 (2026-09-11) — surgical, on evidence from ruff #118
+
+The plan is **amended, not rewritten**: the 63-row ledger, W0–W6, kill joints,
+falsifiers, Jirak discipline and the J1 gate all stand unchanged.
+
+| id | amendment |
+|----|-----------|
+| A-1 | **Thesis corrected.** "A source harvest cannot grade behaviour" was too strong and is struck in place. The source eye CAN understand and classify behaviour; what it cannot do is independently warrant or calibrate its own interpretation. R2IL is the second witness that prices an existing interpretation — it is not what makes the arc behavioural. |
+| A-2 | **The Active Code-Graph is NAMED, not minted.** `CppFunction::calls` vs `CppMethod::calls` is architectural evidence that active intake evidence is not the shared SPO/IR projection. Recorded as a proof obligation — where does full behavioural intake live before the lossy projection — with the existing pieces that may already compose it. No `struct CodeGraph`. |
+| A-3 | **J1 bounded, not weakened.** It proves or kills the stereo thesis for OpenGGS, not for arbitrary C++. Paired with `D-ST-1d` / `F-19`, a shape check on a corpus that actually has namespaces and overloads, because four latent defects landed on #118 that this corpus structurally cannot exercise (the dedup drops 0 of 181). OpenGGS remains the measured population. |
+| A-4 | **`(f, c)` held back.** Raw statistics first — joined population, corroborated, contradicted, behavioural coverage, non-join residual. A stereo similarity score is not a NARS confidence, and the tier stays unminted until the sufficient statistics and their falsifier are written down (`F-20`). |
+| A-5 | **Endgame stated once, as orientation.** Software-as-harvest through `lance-graph` to OGAR Active Records and `ogar-loco`, with four fences: Lance is not lance-graph, the arms stay plural, the `S:P:O ~ P(S,O) ~ Fn_P(S,O)` waist is a hypothesis not a carrier, and the SurrealQL lesson was about provenance rather than the absence of behaviour. This PR implements none of it. |
+
+New rows: `L-64`..`L-67` (§1.6b, append-only), `D-ST-1d`, `F-19`, `F-20`.
+
+### Amendment B-1..B-5 (2026-09-11) — five Codex findings on the plan, all confirmed
+
+| id | finding | resolution |
+|----|---------|------------|
+| B-1 | **P1 — the 13 hand ports are not ground truth.** This plan called them a calibration set while THIS ledger says "Nothing here has been run against the original binary" and that the tests assert only internal invariants. Scoring the disparity metric against them is circular, and they are a biased sample besides — hand-picked for being mechanically tractable, the very property the metric predicts. | `D-ST-1c` withdrawn, `F-5` blocked on the parity falsifier this ledger already names. Until it runs the metric has **no** calibration set and must say so. |
+| B-2 | **P2 — `F-2` demanded divergence instead of proving dependency.** A correctly-wired `recipe::classify` that legitimately agrees with the retired placement on all 181 would have FAILED the test. Output equality never proved non-consultation. | Replaced with a perturb/disable arm: change `classify`, assert the placement changes, restore, assert it returns. Red-then-green. |
+| B-3 | **P2 — amber had no executable path.** W1 forbade all W2+ work until J1 was green and defined green as a majority join, while J1's amber branch said the metric "survives". | Amber is now an explicit **scoped pass**: W2+ may proceed over the joined subset with its denominator named, coverage for the rest at zero. |
+| B-4 | **P1 — unknown is not false.** `INDIRECT_UNKNOWN_INTERMEDIATES` records that the SOURCE lacks the mediator, not that none exists. `F-12`/`J3` killed the promoter for recovering one, with no ground-truth label to judge it — so a promoter that correctly found something the source lacked would have been killed. | Rewritten to test **epistemic restraint**: does the promoter mark ordinal-2 output as unwarranted rather than promote it as warranted. Recovery alone is explicitly **not** a kill, and the absence of a real negative control is stated. |
+| B-5 | **P2 — `F-18` could not substantiate its own claim.** It asserted every §2 "must not" had a named test; two did not (undeclared-lens refusal, and `Dissonant`-not-stored / the `TrustTexture` homonyms). | `F-21` and `F-22` added. `F-18` now records that it failed its own check on first review — the `G11`-was-prose failure mode (L-57), reproduced by the very row that cites it. |
+
+The five are the plan's own doctrine applied to the plan: anti-vacuity arms that
+cannot fail, a control that is not a control, and an invariant index that did
+not index itself.
+
+### Amendment C-1..C-7 (2026-09-11) — operator corrections to the model
+
+The one line: **lance-graph IS the CodeGraph; SPOFC is its relational algebra;
+`CausalEdge64` is the compact wire image of that algebra; R2IL is another native
+behavioural plane, not something that must first be converted into SPO.**
+
+| id | correction |
+|----|------------|
+| C-1 | **V3 is storage. V4 is IR.** |
+| C-2 | The code-graph is a **PHASE, not a layer** — during discovery the IR *is* a code-graph; after discovery IR/AR belongs to compile. A-2's "name the latent layer" framing is re-framed accordingly. |
+| C-3 | **OGAR is dumb AR + adapters** (mints and adapts, never reasons). **Reasoning is always in lance-graph; consumers reuse.** This corrects a hedge of mine — the assembler-vs-storage fence is about *minting*, not *reasoning*, so the code-graph is in lance-graph and the two were never in tension. |
+| C-4 | **`CausalEdge64` ⇄ SPOFC, encode/decode.** Not "reasoning → causality finally earned → CE64". The plan's original "tokenised into" wording is struck in place. |
+| C-5 | **Four axes, not five bits of causality.** Semantic `P` = what the relation MEANS; bits 59–60 = how it is mediated; bits 61–63 = what reasoning it entitles. *`P = CAUSES` asserts meaning; `band = Causal` grants permission to reason causally.* `P = CAUSES` ∧ `topology = IndirectUnknown` is a legitimate, rich state. |
+| C-6 | **Never convert R2IL into SPO** (operator ruling 2026-08-26). Lifting a binary into R2IL is fine; lowering R2IL into triples is the lossy static shadow the ruling forbids. `D-ST-2a` tightened, `F-23` added, and vendoring `r2sleigh` as a submodule is ruled out — `ogar-r2il` exists precisely so it is not a dependency. |
+| C-7 | **No hand-rolled code-graph in frontend comments.** A fact about predicates is a code-graph relation — data, queryable, reusable across arms — not a twenty-line prose block in one frontend's example. The executable guard is right; the prose beside it is the violation. Two measured instances in this arc, both mine. |
+
+Two collisions caught by checking rather than assuming, both recorded as
+`L-71`: **"Tarski" is already taken** by `Belief::rung` (derivation depth from
+observation, not admissibility), so bits 61–63 are the **reasoning-grade /
+admissibility lattice**; and **`Supports` is already taken** by
+`dismech_evidence` as a 4-state evidence stance, which is not a semantic `P`.
+
+And the mechanism the stereo comparison needs turns out to be **already
+shipped** (`L-72`): `ogar-r2il::project(&slab, shape, &mask)` reads one body's
+360 content bytes as 180/120/90 calls depending on `LaneShape`, masked and
+lazy — *"a shape is a lens, not a migration."*
+
+New rows: `L-68`..`L-72` (§1.6c, append-only), `F-23`.
