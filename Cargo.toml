@@ -4,6 +4,7 @@ members = [
     "crates/openggs-core",
     "crates/openggs-stagefile",
     "crates/openggs-spo",
+    "crates/openggs-furnace",
 ]
 
 [workspace.package]
