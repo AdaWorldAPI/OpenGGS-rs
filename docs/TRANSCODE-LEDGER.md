@@ -275,3 +275,17 @@ falsifiers, Jirak discipline and the J1 gate all stand unchanged.
 | A-5 | **Endgame stated once, as orientation.** Software-as-harvest through `lance-graph` to OGAR Active Records and `ogar-loco`, with four fences: Lance is not lance-graph, the arms stay plural, the `S:P:O ~ P(S,O) ~ Fn_P(S,O)` waist is a hypothesis not a carrier, and the SurrealQL lesson was about provenance rather than the absence of behaviour. This PR implements none of it. |
 
 New rows: `L-64`..`L-67` (§1.6b, append-only), `D-ST-1d`, `F-19`, `F-20`.
+
+### Amendment B-1..B-5 (2026-09-11) — five Codex findings on the plan, all confirmed
+
+| id | finding | resolution |
+|----|---------|------------|
+| B-1 | **P1 — the 13 hand ports are not ground truth.** This plan called them a calibration set while THIS ledger says "Nothing here has been run against the original binary" and that the tests assert only internal invariants. Scoring the disparity metric against them is circular, and they are a biased sample besides — hand-picked for being mechanically tractable, the very property the metric predicts. | `D-ST-1c` withdrawn, `F-5` blocked on the parity falsifier this ledger already names. Until it runs the metric has **no** calibration set and must say so. |
+| B-2 | **P2 — `F-2` demanded divergence instead of proving dependency.** A correctly-wired `recipe::classify` that legitimately agrees with the retired placement on all 181 would have FAILED the test. Output equality never proved non-consultation. | Replaced with a perturb/disable arm: change `classify`, assert the placement changes, restore, assert it returns. Red-then-green. |
+| B-3 | **P2 — amber had no executable path.** W1 forbade all W2+ work until J1 was green and defined green as a majority join, while J1's amber branch said the metric "survives". | Amber is now an explicit **scoped pass**: W2+ may proceed over the joined subset with its denominator named, coverage for the rest at zero. |
+| B-4 | **P1 — unknown is not false.** `INDIRECT_UNKNOWN_INTERMEDIATES` records that the SOURCE lacks the mediator, not that none exists. `F-12`/`J3` killed the promoter for recovering one, with no ground-truth label to judge it — so a promoter that correctly found something the source lacked would have been killed. | Rewritten to test **epistemic restraint**: does the promoter mark ordinal-2 output as unwarranted rather than promote it as warranted. Recovery alone is explicitly **not** a kill, and the absence of a real negative control is stated. |
+| B-5 | **P2 — `F-18` could not substantiate its own claim.** It asserted every §2 "must not" had a named test; two did not (undeclared-lens refusal, and `Dissonant`-not-stored / the `TrustTexture` homonyms). | `F-21` and `F-22` added. `F-18` now records that it failed its own check on first review — the `G11`-was-prose failure mode (L-57), reproduced by the very row that cites it. |
+
+The five are the plan's own doctrine applied to the plan: anti-vacuity arms that
+cannot fail, a control that is not a control, and an invariant index that did
+not index itself.
