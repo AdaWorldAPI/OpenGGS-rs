@@ -245,3 +245,18 @@ the harvest reads the corpus in place.
 
 `pstaender/giana-sisters-lost-levels` was **not** used: it is a separate
 JavaScript project, not a source for this transcode.
+
+## Plan index
+
+| plan | status | what it carries |
+|------|--------|-----------------|
+| `.claude/plans/stereo-spo-r2il-v1.md` | PROPOSAL (2026-09-11) | The accumulated integration plan for the stereo SPO x R2IL arc: a 63-row graded finding ledger across this repo, `ruff`, `r2sleigh`, `lance-graph`, the consumer arc and sibling doctrine; a five-stage architecture over already-shipped carriers; waves W0-W6; 18 falsification tests each with its anti-vacuity arm; three kill joints (J1-J3); an explicit out-of-scope list; seven open questions. |
+
+**J1 is the arc's gate.** Coverage stays 13/181 and the furnace emits no Rust
+until the stereo join is measured, because every frequency and confidence the
+plan derives is a ratio whose denominator that probe produces. If the join comes
+back near-empty the plan's own KILL clause applies: the stereo thesis is false
+for this corpus, the `.lvl` data-shape oracle (F-1) still stands, and the
+transcode is an honest hand port with the harvest doing placement only.
+
+Append-only. Regrade in place with a dated note; never delete a row.
